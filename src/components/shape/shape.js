@@ -114,7 +114,19 @@ var Shape = {
 
   remove: function() {
     if (this.bodyEl.parentNode) {
-      console.warn('removing shape component not currently supported');
+      const shape = this.shape;
+      const body = shape.body;
+      const shapes = body.shapes;
+      const shapeOffsets = body.shapeOffsets;
+      const shapeOrientations = body.shapeOrientations;
+      const index = shapes.indexOf(shape);
+      shapes.splice(index, 1);
+      shapeOffsets.splice(index, 1);
+      shapeOrientations.splice(index, 1);
+
+      body.updateMassProperties();
+      body.updateBoundingRadius();
+      body.aabbNeedsUpdate = true;
     }
   }
 };
