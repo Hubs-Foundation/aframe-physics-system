@@ -91,6 +91,7 @@ var Shape = {
         return;
     }
     shape.component = this;
+    this.shape = shape;
 
     if (this.bodyEl.body) {
       this.bodyEl.components[bodyType].addShape(shape, offset, orientation);
@@ -110,6 +111,16 @@ var Shape = {
       return'static-body';
     }
     return null;
+  },
+
+  update: function(){
+    if (this.bodyEl &&
+        this.bodyEl.components.body &&
+        this.bodyEl.components.body.body &&
+        this.bodyEl.components.body.body.world) {
+      this.bodyEl.components.body.syncToPhysics();
+      this.bodyEl.components.body.updateCannonScale();
+    }
   },
 
   remove: function() {
