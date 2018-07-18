@@ -92,7 +92,10 @@ var Body = {
     }
 
     if (this.isLoaded) {
-      this.el.emit('body-loaded', {body: this.el.body});
+      if (!this.didEmitBodyLoaded){
+        this.el.emit('body-loaded', {body: this.el.body});
+        this.didEmitBodyLoaded = true;
+      }
     }
   },
 
@@ -126,7 +129,10 @@ var Body = {
 
       this._play();
 
-      this.el.emit('body-loaded', {body: this.el.body});
+      if (!this.didEmitBodyLoaded){
+        this.el.emit('body-loaded', {body: this.el.body});
+        this.didEmitBodyLoaded = true;
+      }
       this.shouldUpdateBody = false;
     }
 
@@ -193,8 +199,11 @@ var Body = {
    */
   _play: function () {
     this.syncToPhysics();
-    this.system.addComponent(this);
-    this.system.addBody(this.body);
+    if (!this.didAddComponentAndAddBody){
+      this.system.addComponent(this);
+      this.system.addBody(this.body);
+      this.didAddComponentAndAddBody = true;
+    }
     if (this.wireframe) this.el.sceneEl.object3D.add(this.wireframe);
   },
 
