@@ -8,7 +8,6 @@ module.exports = AFRAME.registerComponent('velocity', {
     this.system = this.el.sceneEl.systems.physics;
     this.defaultVelocity = {x: 0, y: 0, z: 0};
     this.defaultPosition = {x: 0, y: 0, z: 0};
-    this.position = {x: 0, y: 0, z: 0};
 
     if (this.system) {
       this.system.addComponent(this);
@@ -34,14 +33,14 @@ module.exports = AFRAME.registerComponent('velocity', {
 
     // TODO - There's definitely a bug with getComputedAttribute and el.data.
     velocity = this.el.getAttribute('velocity') || this.defaultVelocity,
-    position = this.el.getAttribute('position') || this.defaultPosition;
+    position = this.el.object3D.position || this.defaultPosition;
 
     dt = Math.min(dt, physics.data.maxInterval * 1000);
 
-    this.position.x = position.x + velocity.x * dt / 1000;
-    this.position.y = position.y + velocity.y * dt / 1000;
-    this.position.z = position.z + velocity.z * dt / 1000;
-
-    this.el.setAttribute('position', this.position);
+    this.el.object3D.position.set(
+      position.x + velocity.x * dt / 1000,
+      position.y + velocity.y * dt / 1000,
+      position.z + velocity.z * dt / 1000
+    );
   }
 });
