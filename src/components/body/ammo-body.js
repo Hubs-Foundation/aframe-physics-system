@@ -163,18 +163,6 @@ let AmmoBody = {
       this.localScaling.setValue(this.prevScale.x, this.prevScale.y, this.prevScale.z);
 
       this.compoundShape.setLocalScaling(this.localScaling);
-
-      //TODO: figure out why scaling with FIT.MANUAL is weird
-      for (let i = 0; i < this.shapeComponents.length; i++) {
-        const shapeComponent = this.shapeComponents[i];
-        if (shapeComponent.data.fit === FIT.MANUAL) {
-          const collisionShapes = shapeComponent.getShapes();
-          for (let j = 0; j < collisionShapes.length; j++) {
-            const collisionShape = collisionShapes[j];
-            collisionShape.setLocalScaling(this.localScaling);
-          }
-        }
-      }
     }
 
     if (this.shapeComponentsChanged) {
